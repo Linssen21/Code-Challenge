@@ -46,6 +46,8 @@ COPY source/backend/composer.json source/backend/composer.lock ./
 # Copy backend source
 COPY source/backend /var/www
 
+RUN chmod +x /var/www/migrate_and_seed.sh
+
 # Set environment variable to allow Composer plugins to run as root
 ENV COMPOSER_ALLOW_SUPERUSER=1
 

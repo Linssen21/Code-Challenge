@@ -14,10 +14,10 @@ Starting up the containers
 docker-compose -f docker-compose.local.yml up -d
 ```
 
-## 2. Laravel commands
+## 2. Laravel Backend command
 
-Running the migrations
+Running the migrations and seeder
 
 ```shell
-docker exec -it backend-exam bash php artisan migrate
+docker exec -it backend-exam bash migrate_and_seed.sh
 ```

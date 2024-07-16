@@ -46,6 +46,21 @@ services:
     networks:
       - local-dev-network
 
+  frontend:
+    build:
+      context: .
+      dockerfile: config/Docker/Dockerfile.react
+    container_name: frontend-exam
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    volumes:
+      - ./source/frontend/src:/frontend/src
+      - ./source/frontend/package.json:/frontend/package.json
+    networks:
+      - local-dev-network
+
   #Nginx Service
   nginx-webserver:
     build:

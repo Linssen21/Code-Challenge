@@ -1,0 +1,2 @@
+CREATE database IF NOT EXISTS exam CHARACTER SET UTF8 COLLATE utf8_general_ci;
+CREATE database IF NOT EXISTS exam_test CHARACTER SET UTF8 COLLATE utf8_general_ci;

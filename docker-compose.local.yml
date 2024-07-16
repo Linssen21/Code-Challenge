@@ -1,0 +1,84 @@
+version: '3'
+
+networks:
+  local-dev-network:
+    driver: bridge
+
+services:
+
+  #PHP Service
+  backend:
+    build:
+      context: .
+      dockerfile: config/Docker/Dockerfile.php
+    container_name: backend-exam
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: backend
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ./source/backend:/var/www
+      - ./source/backend/app:/var/www/app
+      - ./source/backend/bootstrap:/var/www/bootstrap
+      - ./source/backend/composer.lock:/var/www/composer.lock
+      - ./source/backend/database:/var/www/database
+      - ./source/backend/phpunit.xml:/var/www/phpunit.xml
+      - ./source/backend/routes:/var/www/routes
+      - ./source/backend/tests:/var/www/tests
+      - ./source/backend/vite.config.js:/var/www/vite.config.js
+      - ./source/backend/artisan:/var/www/artisan
+      - ./source/backend/composer.json:/var/www/composer.json
+      - ./source/backend/config:/var/www/config
+      - ./source/backend/package.json:/var/www/package.json
+      - ./source/backend/public:/var/www/public
+      - ./source/backend/resources:/var/www/resources
+      - ./source/backend/storage:/var/www/storage
+      - ./config/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./config/php/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
+      - ./config/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+
+    depends_on:
+      - mysql
+    ports:
+      - "9000:9000"
+    networks:
+      - local-dev-network
+
+  #Nginx Service
+  nginx-webserver:
+    build:
+      context: .
+      dockerfile: config/Docker/Dockerfile.nginxserver
+    container_name: nginx-webserver-exam
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./source/backend:/var/www
+      - ./config/nginxserver/conf.d/:/etc/nginx/conf.d/
+    depends_on:
+      - backend
+      - mysql
+    networks:
+      - local-dev-network
+
+  #MySQL Service
+  mysql:
+    container_name: mysql-exam
+    command: --default-authentication-plugin=mysql_native_password
+    build:
+      context: .
+      dockerfile: config/Docker/Dockerfile.mysql
+    environment:
+      MYSQL_DATABASE: exam
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/persistence:/var/lib/mysql
+    networks:
+      - local-dev-network

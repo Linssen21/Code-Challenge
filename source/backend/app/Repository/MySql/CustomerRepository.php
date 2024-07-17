@@ -32,11 +32,13 @@ class CustomerRepository implements ICustomerRepository
 
     public function find(array $column, mixed $mixOperator = "="): ?Customer
     {
-        $queryCustomer = $this->customerModel->query()->where('is_delete', 0);
-        foreach ($column as $columnField => $columnValue) {
+        $queryCustomer = $this->customerModel->query()->where('is_delete', '=', 0);
+        $firstCondition = true;
 
-            if ($queryCustomer->getQuery()->wheres) {
-                $queryCustomer->orWhere($columnField, $mixOperator, $columnValue);
+        foreach ($column as $columnField => $columnValue) {
+            if ($firstCondition) {
+                $queryCustomer->where($columnField, $mixOperator, $columnValue);
+                $firstCondition = false;
             } else {
                 $queryCustomer->where($columnField, $mixOperator, $columnValue);
             }

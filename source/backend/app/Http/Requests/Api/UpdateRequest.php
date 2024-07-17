@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Api;
 
+use Illuminate\Validation\Rule;
+
 class UpdateRequest extends ApiRequest
 {
     /**
@@ -21,11 +23,12 @@ class UpdateRequest extends ApiRequest
      */
     public function rules(): array
     {
+
         return [
             'id' => ['required', 'integer', 'exists:customers,id'],
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:customers,email'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('customers')->ignore($this->post('id'))],
             'contact_number' => ['required', 'string', 'regex:/^\+?[0-9]{10,15}$/'],
         ];
     }

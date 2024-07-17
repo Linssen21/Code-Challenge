@@ -51,7 +51,7 @@ class CustomerController extends Controller
     {
         try {
             $customerUpdate = new CustomerUpdateDto(
-                $request->input('id'),
+                (int) $request->input('id'),
                 $request->input('first_name'),
                 $request->input('last_name'),
                 $request->input('email'),

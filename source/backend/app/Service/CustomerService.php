@@ -81,7 +81,7 @@ class CustomerService
 
     public function profile(int $id): array
     {
-        $customer = $this->customerRepository->find(['id' => $id]);
+        $customer = $this->customerRepository->find(['id' => $id], "=");
 
         if (!$customer) {
             return [

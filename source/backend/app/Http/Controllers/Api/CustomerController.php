@@ -76,7 +76,7 @@ class CustomerController extends Controller
     public function delete(DeleteRequest $request): JsonResponse
     {
         try {
-            $id = $request->input('id');
+            $id = (int) $request->input('id');
             $result = $this->customerService->delete($id);
             $status = $result['status'] == config('constants.STATUS_SUCCESS') ? 200 : 500;
             return response()->json($result, $status);

@@ -21,3 +21,9 @@ Running the migrations and seeder
 ```shell
 docker exec -it backend-exam bash migrate_and_seed.sh
 ```
+
+## 3. Url for accessing the frontend
+
+```shell
+http://localhost:5173/
+```

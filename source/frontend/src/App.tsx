@@ -1,22 +1,32 @@
-import { RouterProvider, createRouter } from '@tanstack/react-router'
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { routeTree } from "./routeTree.gen.ts";
+import { SuccessProvider } from "./state/SuccessContext.tsx";
+import { DeleteCustomerContextProvider } from "./state/DeleteCustomerContext.tsx";
 
-import { routeTree } from './routeTree.gen.ts'
+const queryClient = new QueryClient();
 
 const router = createRouter({ routeTree });
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface Register {
-    router: typeof router
+    router: typeof router;
   }
 }
 
 function App() {
   return (
     <>
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <SuccessProvider>
+          <DeleteCustomerContextProvider>
+            <RouterProvider router={router} />
+          </DeleteCustomerContextProvider>
+        </SuccessProvider>
+      </QueryClientProvider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -127,7 +127,7 @@ class CustomerServiceTest extends TestCase
         // Arrange
         $id = 1;
         $this->customerRepositoryMock->shouldReceive('find')
-            ->with(['id' => $id])
+            ->with(['id' => 1], '=')
             ->andReturn($this->customerMock);
 
         // Act

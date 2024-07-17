@@ -20,11 +20,12 @@ export default function Pagination({ links }: { links: PaginationLink[] }) {
     <PaginationButton>
       {links.length > 3 &&
         links.map((link, key) => (
-          <li className={link.active ? "page-item active" : "page-item "}>
+          <li
+            className={`page-item ${link.active ? "active" : ""} ${!link.url ? "disabled" : ""}`}
+          >
             <Link
               className="page-link"
               key={key}
-              disabled={!link.url}
               to={`/?${link.url?.split("?")[1]}`}
             >
               {renderLinkLabel(link.label)}
